@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shrink — Image Optimization Tool</title>
+    <meta name="description" content="Compress images without losing quality. Free online PNG, JPG, and WebP optimizer with side-by-side comparison.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://shrink.pics">
+    <meta property="og:title" content="Shrink — Free Image Optimizer">
+    <meta property="og:description" content="Compress PNG, JPG, and WebP images with instant preview and comparison.">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23059969'/><path d='M8 22V10l6 8 6-8v12' stroke='%23fff' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+</head>
+<body>
+
+    <nav class="nav" role="navigation" aria-label="Main navigation">
+        <div class="nav-inner">
+            <a href="/" class="nav-logo" aria-label="Shrink home">
+                <svg width="28" height="28" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+                    <rect width="32" height="32" rx="8" fill="#059969"/>
+                    <path d="M8 22V10l6 8 6-8v12" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Shrink</span>
+            </a>
+            <div class="nav-links" id="navLinks">
+                <a href="#tool">Optimizer</a>
+                <a href="#pdf-tool">Images to PDF</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#tool" class="nav-cta">Get started</a>
+            </div>
+            <div class="nav-controls">
+                <button class="theme-btn" id="themeToggle" aria-label="Toggle theme">
+                    <svg class="theme-icon sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                    <svg class="theme-icon moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                </button>
+                <button class="mobile-menu" id="mobileMenu" aria-label="Menu">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+
+        <section class="hero">
+            <div class="hero-bg" aria-hidden="true">
+                <div class="hero-glow hero-glow-1"></div>
+                <div class="hero-glow hero-glow-2"></div>
+            </div>
+            <div class="hero-body">
+                <div class="hero-badge">
+                    <span class="badge-dot"></span>
+                    Free online tool
+                </div>
+                <h1 class="hero-title">
+                    Shrink your images.<br>
+                    <span class="text-gradient">Keep the quality.</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Compress, resize, convert, and combine images into PDFs — all in your browser.<br>
+                    Nothing is uploaded. Your files never leave your device.
+                </p>
+                <div class="hero-actions">
+                    <a href="#tool" class="btn btn-primary">
+                        Try it now
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="tool" class="section tool">
+            <div class="tool-tabs">
+                <a href="#tool" class="tool-tab active" data-tab="optimizer">Optimizer</a>
+                <a href="#pdf-tool" class="tool-tab" data-tab="pdf">Images to PDF</a>
+                <a href="#tool" class="tool-tab" data-tab="convert">Convert</a>
+            </div>
+
+            <div id="tab-optimizer" class="tab-content active">
+                <div class="section-header">
+                    <h2>Compress &amp; Resize</h2>
+                    <p>Upload an image, adjust size and quality, then process and download.</p>
+                </div>
+
+                <div class="dropzone" id="dropzone">
+                    <input type="file" id="fileInput" accept="image/png,image/jpeg,image/webp" hidden>
+                    <div class="dropzone-content" id="dropzoneContent">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                        <p><strong>Click to upload</strong> or drag and drop</p>
+                        <span class="dropzone-hint">PNG, JPG, or WebP up to 50MB</span>
+                    </div>
+                </div>
+
+                <div class="editor hidden" id="editor">
+                    <div class="editor-preview">
+                        <div class="editor-image-wrapper">
+                            <img id="previewOriginal" alt="Original">
+                            <div class="editor-badge">Original</div>
+                            <div class="editor-dims" id="originalDims"></div>
+                        </div>
+                        <div class="editor-image-wrapper" id="resultWrapper">
+                            <div class="result-placeholder" id="resultPlaceholder">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.3"><polyline points="20 6 9 17 4 12"/></svg>
+                                <p>Click "Process" to preview</p>
+                            </div>
+                            <img id="previewCompressed" alt="Compressed" class="hidden">
+                            <div class="editor-badge">Processed</div>
+                            <div class="editor-dims hidden" id="compressedDims"></div>
+                        </div>
+                    </div>
+
+                    <div class="editor-controls">
+                        <div class="control-group">
+                            <label class="control-group-label">Resize</label>
+                            <div class="resize-row">
+                                <div class="resize-field">
+                                    <label for="widthInput">Width</label>
+                                    <input type="number" id="widthInput" min="1" step="1">
+                                    <span class="resize-unit">px</span>
+                                </div>
+                                <button class="ratio-lock" id="ratioLock" aria-label="Lock aspect ratio">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+                                </button>
+                                <div class="resize-field">
+                                    <label for="heightInput">Height</label>
+                                    <input type="number" id="heightInput" min="1" step="1">
+                                    <span class="resize-unit">px</span>
+                                </div>
+                            </div>
+                            <div class="resize-presets">
+                                <button class="preset-btn" data-w="1920" data-h="1080">1920×1080</button>
+                                <button class="preset-btn" data-w="1280" data-h="720">1280×720</button>
+                                <button class="preset-btn" data-w="800" data-h="600">800×600</button>
+                                <button class="preset-btn" data-w="400" data-h="300">400×300</button>
+                                <button class="preset-btn" data-w="150" data-h="150">150×150</button>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-group-label">Quality &amp; Format</label>
+                            <div class="quality-format-row">
+                                <div class="quality-field">
+                                    <label for="qualitySlider">Quality: <span id="qualityValue">80</span>%</label>
+                                    <input type="range" id="qualitySlider" min="10" max="100" value="80" step="1">
+                                </div>
+                                <div class="format-field">
+                                    <label for="formatSelect">Output format</label>
+                                    <select id="formatSelect">
+                                        <option value="image/jpeg">JPEG</option>
+                                        <option value="image/png">PNG</option>
+                                        <option value="image/webp">WebP</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary btn-block btn-lg" id="processBtn">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                            Process
+                        </button>
+
+                        <div class="editor-stats hidden" id="statsRow">
+                            <div class="stat-box">
+                                <span class="stat-box-label">Original</span>
+                                <span class="stat-box-value" id="originalSize">—</span>
+                            </div>
+                            <div class="stat-box">
+                                <span class="stat-box-label">Processed</span>
+                                <span class="stat-box-value" id="compressedSize">—</span>
+                            </div>
+                            <div class="stat-box">
+                                <span class="stat-box-label">Savings</span>
+                                <span class="stat-box-value text-accent" id="savings">—</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary btn-block hidden" id="downloadBtn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                            Download
+                        </button>
+                        <button class="btn btn-secondary btn-block" id="resetBtn">Start over</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-pdf" class="tab-content">
+                <div class="section-header">
+                    <h2>Combine images into PDF</h2>
+                    <p>Upload multiple images, reorder them, and download as a single PDF file.</p>
+                </div>
+
+                <div class="dropzone" id="pdfDropzone">
+                    <input type="file" id="pdfFileInput" accept="image/png,image/jpeg,image/webp" multiple hidden>
+                    <div class="dropzone-content">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                        <p><strong>Click to upload</strong> or drag and drop multiple images</p>
+                        <span class="dropzone-hint">PNG, JPG, or WebP — drag to reorder</span>
+                    </div>
+                </div>
+
+                <div class="pdf-editor hidden" id="pdfEditor">
+                    <div class="pdf-list" id="pdfList"></div>
+                    <div class="pdf-controls">
+                        <div class="pdf-controls-row">
+                            <div class="format-field">
+                                <label for="pdfPageSize">Page size</label>
+                                <select id="pdfPageSize">
+                                    <option value="a4">A4</option>
+                                    <option value="letter">Letter</option>
+                                    <option value="legal">Legal</option>
+                                </select>
+                            </div>
+                            <div class="format-field">
+                                <label for="pdfOrientation">Orientation</label>
+                                <select id="pdfOrientation">
+                                    <option value="portrait">Portrait</option>
+                                    <option value="landscape">Landscape</option>
+                                </select>
+                            </div>
+                            <div class="format-field">
+                                <label for="pdfFit">Image fit</label>
+                                <select id="pdfFit">
+                                    <option value="contain">Fit within page</option>
+                                    <option value="cover">Fill page</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary btn-block btn-lg" id="pdfDownloadBtn">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                            Download PDF
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-convert" class="tab-content">
+                <div class="section-header">
+                    <h2>Convert image format</h2>
+                    <p>Convert between JPEG, PNG, and WebP. No quality loss on PNG and WebP.</p>
+                </div>
+
+                <div class="dropzone" id="convertDropzone">
+                    <input type="file" id="convertFileInput" accept="image/png,image/jpeg,image/webp" hidden>
+                    <div class="dropzone-content">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                        <p><strong>Click to upload</strong> or drag and drop an image</p>
+                        <span class="dropzone-hint">PNG, JPG, or WebP</span>
+                    </div>
+                </div>
+
+                <div class="editor hidden" id="convertEditor">
+                    <div class="editor-preview">
+                        <div class="editor-image-wrapper">
+                            <img id="convertPreview" alt="Preview">
+                            <div class="editor-badge">Preview</div>
+                        </div>
+                        <div class="editor-image-wrapper" id="convertResultWrapper">
+                            <div class="result-placeholder" id="convertPlaceholder">
+                                <p>Select format and convert</p>
+                            </div>
+                            <img id="convertResult" alt="Result" class="hidden">
+                            <div class="editor-badge">Converted</div>
+                        </div>
+                    </div>
+                    <div class="editor-controls">
+                        <div class="quality-format-row">
+                            <div class="format-field">
+                                <label for="convertFormat">Convert to</label>
+                                <select id="convertFormat">
+                                    <option value="image/jpeg">JPEG</option>
+                                    <option value="image/png">PNG</option>
+                                    <option value="image/webp">WebP</option>
+                                </select>
+                            </div>
+                            <div class="quality-field">
+                                <label for="convertQuality">Quality: <span id="convertQualityValue">90</span>%</label>
+                                <input type="range" id="convertQuality" min="10" max="100" value="90" step="1">
+                            </div>
+                        </div>
+                        <button class="btn btn-primary btn-block btn-lg" id="convertBtn">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                            Convert
+                        </button>
+                        <button class="btn btn-primary btn-block hidden" id="convertDownloadBtn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                            Download converted image
+                        </button>
+                        <button class="btn btn-secondary btn-block" id="convertResetBtn">Convert another</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="how" class="section steps">
+            <div class="section-header">
+                <h2>Three tools in one</h2>
+                <p>Compress, convert, and combine images — all in your browser.</p>
+            </div>
+            <div class="steps-grid">
+                <article class="step-card">
+                    <span class="step-number">1</span>
+                    <h3>Compress &amp; Resize</h3>
+                    <p>Upload an image, adjust dimensions and quality, then process. Side-by-side preview shows exactly what you get before downloading.</p>
+                </article>
+                <article class="step-card">
+                    <span class="step-number">2</span>
+                    <h3>Convert Format</h3>
+                    <p>Switch between JPEG, PNG, and WebP. Perfect for preparing images for the web, email, or print.</p>
+                </article>
+                <article class="step-card">
+                    <span class="step-number">3</span>
+                    <h3>Combine to PDF</h3>
+                    <p>Upload multiple images, reorder them by dragging, and export as a single PDF. Handy for portfolios, reports, and presentations.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="section features">
+            <div class="section-header">
+                <h2>Everything you need to work with images</h2>
+                <p>Compression, conversion, and PDF generation — all client-side, all private.</p>
+            </div>
+            <div class="features-grid">
+                <article class="feature-card">
+                    <div class="feature-icon" style="--icon-bg: rgba(5,153,105,0.1); --icon-color: #059969">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                    </div>
+                    <h3>Smart compression</h3>
+                    <p>Reduce image size by up to 80% with minimal quality loss. Adjust the quality slider to find the perfect balance.</p>
+                </article>
+                <article class="feature-card">
+                    <div class="feature-icon" style="--icon-bg: rgba(245,158,11,0.1); --icon-color: #f59e0b">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/></svg>
+                    </div>
+                    <h3>Format conversion</h3>
+                    <p>Convert between JPEG, PNG, and WebP. No upload needed — everything happens in your browser.</p>
+                </article>
+                <article class="feature-card">
+                    <div class="feature-icon" style="--icon-bg: rgba(99,102,241,0.1); --icon-color: #6366f1">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                    </div>
+                    <h3>Images to PDF</h3>
+                    <p>Combine multiple images into a single PDF. Drag to reorder, choose page size and orientation.</p>
+                </article>
+                <article class="feature-card">
+                    <div class="feature-icon" style="--icon-bg: rgba(139,92,246,0.1); --icon-color: #8b5cf6">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+                    </div>
+                    <h3>Client-side only</h3>
+                    <p>Zero server uploads. Your files are processed entirely in your browser using the Canvas API and jsPDF.</p>
+                </article>
+                <article class="feature-card">
+                    <div class="feature-icon" style="--icon-bg: rgba(239,68,68,0.1); --icon-color: #ef4444">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+                    </div>
+                    <h3>Resize with presets</h3>
+                    <p>Choose from common resolutions or enter custom dimensions. Aspect ratio lock keeps proportions intact.</p>
+                </article>
+                <article class="feature-card">
+                    <div class="feature-icon" style="--icon-bg: rgba(16,185,129,0.1); --icon-color: #10b981">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    </div>
+                    <h3>No sign-up required</h3>
+                    <p>Free to use with no account needed. Upgrade for unlimited processing and API access.</p>
+                </article>
+            </div>
+        </section>
+
+        <section id="pricing" class="section pricing">
+            <div class="section-header">
+                <h2>Pricing</h2>
+                <p>Free for occasional use. Paid plans for power users and teams.</p>
+                <div class="billing-toggle">
+                    <span class="billing-label active" id="monthlyLabel">Monthly</span>
+                    <label class="toggle">
+                        <input type="checkbox" id="billingSwitch" aria-label="Toggle yearly billing">
+                        <span class="toggle-track"></span>
+                    </label>
+                    <span class="billing-label" id="yearlyLabel">Yearly <span class="billing-save">Save 25%</span></span>
+                </div>
+            </div>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-card-header">
+                        <h3>Free</h3>
+                        <p class="pricing-price"><span class="pricing-currency">$</span><span class="pricing-amount" data-monthly="0" data-yearly="0">0</span></p>
+                        <p class="pricing-period">Forever</p>
+                    </div>
+                    <ul class="pricing-features">
+                        <li class="check">5 images per day</li>
+                        <li class="check">JPG and PNG support</li>
+                        <li class="check">Basic quality control</li>
+                        <li class="cross">WebP / AVIF export</li>
+                        <li class="cross">Batch processing</li>
+                        <li class="cross">API access</li>
+                    </ul>
+                    <a href="#tool" class="btn btn-secondary btn-block">Get started</a>
+                </div>
+                <div class="pricing-card pricing-card-featured">
+                    <div class="pricing-card-header">
+                        <span class="pricing-badge">Most popular</span>
+                        <h3>Pro</h3>
+                        <p class="pricing-price"><span class="pricing-currency">$</span><span class="pricing-amount" data-monthly="9" data-yearly="7">9</span></p>
+                        <p class="pricing-period">Per month</p>
+                    </div>
+                    <ul class="pricing-features">
+                        <li class="check">Unlimited images</li>
+                        <li class="check">WebP and AVIF export</li>
+                        <li class="check">Fine quality control</li>
+                        <li class="check">Batch processing</li>
+                        <li class="check">Preset profiles</li>
+                        <li class="cross">API access</li>
+                    </ul>
+                    <a href="#" class="btn btn-primary btn-block">Subscribe</a>
+                </div>
+                <div class="pricing-card">
+                    <div class="pricing-card-header">
+                        <h3>API</h3>
+                        <p class="pricing-price"><span class="pricing-currency">$</span><span class="pricing-amount" data-monthly="19" data-yearly="15">19</span></p>
+                        <p class="pricing-period">Per month</p>
+                    </div>
+                    <ul class="pricing-features">
+                        <li class="check">Everything in Pro</li>
+                        <li class="check">REST API access</li>
+                        <li class="check">50K requests / month</li>
+                        <li class="check">Webhook callbacks</li>
+                        <li class="check">Custom integrations</li>
+                        <li class="check">Priority support</li>
+                    </ul>
+                    <a href="#" class="btn btn-secondary btn-block">Get API access</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="section testimonials">
+            <div class="section-header">
+                <h2>Trusted by developers and designers</h2>
+                <p></p>
+            </div>
+            <div class="testimonials-grid">
+                <blockquote class="testimonial-card">
+                    <p>"I shrank our landing page images by 55% on average. Page speed score went from 72 to 94."</p>
+                    <footer>
+                        <strong>Alex M.</strong>
+                        <span>Frontend Lead</span>
+                    </footer>
+                </blockquote>
+                <blockquote class="testimonial-card">
+                    <p>"The fact that it runs entirely in the browser is huge for us. No compliance concerns."</p>
+                    <footer>
+                        <strong>Priya K.</strong>
+                        <span>Design Engineer</span>
+                    </footer>
+                </blockquote>
+                <blockquote class="testimonial-card">
+                    <p>"We integrated the API into our CI pipeline. Every PR now auto-optimizes images before deploy."</p>
+                    <footer>
+                        <strong>Tom W.</strong>
+                        <span>Platform Engineer</span>
+                    </footer>
+                </blockquote>
+            </div>
+        </section>
+
+        <section class="section cta">
+            <div class="cta-card">
+                <h2>Try it with your own image</h2>
+                <p>No sign-up. No uploads. Just a faster, smaller image in seconds.</p>
+                <a href="#tool" class="btn btn-primary btn-lg">Upload an image</a>
+            </div>
+        </section>
+
+        <section class="section newsletter">
+            <div class="newsletter-inner">
+                <div class="section-header">
+                    <h2>Get optimization tips and product updates</h2>
+                    <p>Short weekly email. No spam.</p>
+                </div>
+                <form class="newsletter-form" id="newsletterForm">
+                    <label for="newsletterEmail" class="sr-only">Email address</label>
+                    <input type="email" id="newsletterEmail" placeholder="you@company.com" required autocomplete="email">
+                    <button type="submit" class="btn btn-primary">Subscribe</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-body">
+            <div class="footer-col footer-brand">
+                <a href="/" class="nav-logo">
+                    <svg width="24" height="24" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+                        <rect width="32" height="32" rx="8" fill="#059969"/>
+                        <path d="M8 22V10l6 8 6-8v12" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>Shrink</span>
+                </a>
+                <p>Browser-based image optimization. Fast, private, free.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Product</h4>
+                <a href="#tool">Image optimizer</a>
+                <a href="#pdf-tool">Images to PDF</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#">API</a>
+                <a href="#">Changelog</a>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <a href="#">About</a>
+                <a href="#">Blog</a>
+                <a href="#">Careers</a>
+                <a href="#">Contact</a>
+            </div>
+            <div class="footer-col">
+                <h4>Legal</h4>
+                <a href="#">Privacy</a>
+                <a href="#">Terms</a>
+                <a href="#">Security</a>
+                <a href="#">GDPR</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Shrink. All rights reserved.</p>
+            <div class="footer-social">
+                <a href="#" aria-label="X / Twitter">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                </a>
+                <a href="#" aria-label="GitHub">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <div class="toast" id="toast" role="alert" aria-live="polite"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
