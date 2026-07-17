@@ -526,20 +526,6 @@ document.addEventListener('DOMContentLoaded', () => {
      BILLING / NEWSLETTER / SCROLL
      ═══════════════════════════════════════════════ */
 
-  const billingSwitch = document.getElementById('billingSwitch');
-  const monthlyLabel = document.getElementById('monthlyLabel');
-  const yearlyLabel = document.getElementById('yearlyLabel');
-  const amounts = document.querySelectorAll('.pricing-amount');
-  const periods = document.querySelectorAll('.pricing-period');
-
-  billingSwitch.addEventListener('change', () => {
-    const yearly = billingSwitch.checked;
-    monthlyLabel.classList.toggle('active', !yearly);
-    yearlyLabel.classList.toggle('active', yearly);
-    amounts.forEach(el => { el.textContent = yearly ? el.getAttribute('data-yearly') : el.getAttribute('data-monthly'); });
-    periods.forEach(el => { el.textContent = yearly ? 'Per month, billed yearly' : 'Per month'; });
-  });
-
   const newsletterForm = document.getElementById('newsletterForm');
   newsletterForm.addEventListener('submit', (e) => {
     e.preventDefault();
