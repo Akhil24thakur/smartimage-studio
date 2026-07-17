@@ -526,16 +526,6 @@ document.addEventListener('DOMContentLoaded', () => {
      BILLING / NEWSLETTER / SCROLL
      ═══════════════════════════════════════════════ */
 
-  const newsletterForm = document.getElementById('newsletterForm');
-  newsletterForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const input = document.getElementById('newsletterEmail');
-    const email = input.value.trim();
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showToast('Please enter a valid email.'); return; }
-    input.value = '';
-    showToast('Subscribed!');
-  });
-
   const scrollObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
