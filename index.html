@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shrink — Image Optimization Tool</title>
-    <meta name="description" content="Compress images without losing quality. Free online PNG, JPG, and WebP optimizer with side-by-side comparison.">
+    <title>Shrink — Image, Audio & Document Tools</title>
+    <meta name="description" content="Free online tools to compress images, convert audio, edit PDFs, and transform documents. All in your browser, zero uploads.">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://shrink.pics">
     <meta property="og:title" content="Shrink — Free Image Optimizer">
@@ -15,6 +15,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lamejs@1.2.1/lame.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mammoth@1.8.0/mammoth.browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23059969'/><path d='M8 22V10l6 8 6-8v12' stroke='%23fff' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
 </head>
 <body>
@@ -29,9 +34,11 @@
                 <span>Shrink</span>
             </a>
             <div class="nav-links" id="navLinks">
-                <a href="#tool">Optimizer</a>
-                <a href="#pdf-tool">Images to PDF</a>
-                <a href="#tool" class="nav-cta">Get started</a>
+                <a href="#tool">Image Tools</a>
+                <a href="#audio">Audio</a>
+                <a href="#docs">Documents</a>
+                <a href="#pdfedit">PDF Editor</a>
+                <a href="#how">About</a>
             </div>
             <div class="nav-controls">
                 <button class="theme-btn" id="themeToggle" aria-label="Toggle theme">
@@ -58,15 +65,15 @@
                     Free online tool
                 </div>
                 <h1 class="hero-title">
-                    Shrink your images.<br>
-                    <span class="text-gradient">Keep the quality.</span>
+                    All-in-one<br>
+                    <span class="text-gradient">file tools</span>
                 </h1>
                 <p class="hero-subtitle">
-                    Compress, resize, convert, and combine images into PDFs — all in your browser.<br>
+                    Compress images, convert audio, edit PDFs, and transform documents — all in your browser.<br>
                     Nothing is uploaded. Your files never leave your device.
                 </p>
                 <div class="hero-actions">
-                    <a href="#tool" class="btn btn-primary">
+                    <a href="#optimizer" class="btn btn-primary">
                         Try it now
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                     </a>
@@ -76,9 +83,12 @@
 
         <section id="tool" class="section tool">
             <div class="tool-tabs">
-                <a href="#tool" class="tool-tab active" data-tab="optimizer">Optimizer</a>
+                <a href="#optimizer" class="tool-tab active" data-tab="optimizer">Optimizer</a>
                 <a href="#pdf-tool" class="tool-tab" data-tab="pdf">Images to PDF</a>
-                <a href="#tool" class="tool-tab" data-tab="convert">Convert</a>
+                <a href="#convert" class="tool-tab" data-tab="convert">Convert</a>
+                <a href="#audio" class="tool-tab" data-tab="audio">Audio</a>
+                <a href="#docs" class="tool-tab" data-tab="documents">Documents</a>
+                <a href="#pdfedit" class="tool-tab" data-tab="pdfedit">PDF Editor</a>
             </div>
 
             <div id="tab-optimizer" class="tab-content active">
@@ -120,17 +130,28 @@
                             <div class="resize-row">
                                 <div class="resize-field">
                                     <label for="widthInput">Width</label>
-                                    <input type="number" id="widthInput" min="1" step="1">
-                                    <span class="resize-unit">px</span>
+                                    <input type="number" id="widthInput" min="1" step="any">
+                                    <span class="resize-unit" id="widthUnitLabel">px</span>
                                 </div>
                                 <button class="ratio-lock" id="ratioLock" aria-label="Lock aspect ratio">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
                                 </button>
                                 <div class="resize-field">
                                     <label for="heightInput">Height</label>
-                                    <input type="number" id="heightInput" min="1" step="1">
-                                    <span class="resize-unit">px</span>
+                                    <input type="number" id="heightInput" min="1" step="any">
+                                    <span class="resize-unit" id="heightUnitLabel">px</span>
                                 </div>
+                            </div>
+                            <div class="resize-unit-select">
+                                <label for="resizeUnit">Unit</label>
+                                <select id="resizeUnit">
+                                    <option value="px">Pixels (px)</option>
+                                    <option value="cm">Centimeters (cm)</option>
+                                    <option value="mm">Millimeters (mm)</option>
+                                    <option value="in">Inches (in)</option>
+                                    <option value="pt">Points (pt)</option>
+                                    <option value="percent">Percent (%)</option>
+                                </select>
                             </div>
                             <div class="resize-presets">
                                 <button class="preset-btn" data-w="1920" data-h="1080">1920×1080</button>
@@ -293,36 +314,231 @@
                     </div>
                 </div>
             </div>
+
+            <div id="tab-documents" class="tab-content">
+                <div class="section-header">
+                    <h2>Document Converter</h2>
+                    <p>Convert between DOCX, PPTX, TXT, HTML, Markdown, CSV and more. All processing is done in your browser.</p>
+                </div>
+
+                <div class="dropzone" id="docDropzone">
+                    <input type="file" id="docFileInput" accept=".docx,.pptx,.txt,.html,.htm,.md,.csv,.xml,.json,.rtf" hidden>
+                    <div class="dropzone-content">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                        <p><strong>Click to upload</strong> or drag and drop a document</p>
+                        <span class="dropzone-hint">DOCX, PPTX, TXT, HTML, MD, CSV, XML, JSON, RTF</span>
+                    </div>
+                </div>
+
+                <div class="editor hidden" id="docEditor">
+                    <div class="editor-preview">
+                        <div class="editor-image-wrapper">
+                            <div class="audio-info">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                                <div class="audio-details">
+                                    <span class="audio-name" id="docFileName">—</span>
+                                    <span class="audio-meta" id="docFileMeta">—</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="editor-image-wrapper" id="docResultWrapper">
+                            <div class="result-placeholder" id="docPlaceholder">
+                                <p>Select format and convert</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="doc-preview-wrapper hidden" id="docPreviewWrapper">
+                        <div class="doc-preview-content" id="docPreviewContent"></div>
+                    </div>
+                    <div class="editor-controls">
+                        <div class="quality-format-row">
+                            <div class="format-field">
+                                <label for="docFormat">Convert to</label>
+                                <select id="docFormat">
+                                    <option value="txt">TXT</option>
+                                    <option value="html">HTML</option>
+                                    <option value="md">Markdown</option>
+                                    <option value="csv">CSV</option>
+                                    <option value="docx">DOCX</option>
+                                    <option value="pptx">PPTX</option>
+                                    <option value="json">JSON</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary btn-block btn-lg" id="docConvertBtn">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                            Convert
+                        </button>
+                        <button class="btn btn-primary btn-block hidden" id="docDownloadBtn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                            Download converted document
+                        </button>
+                        <button class="btn btn-secondary btn-block" id="docResetBtn">Convert another</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-pdfedit" class="tab-content">
+                <div class="section-header">
+                    <h2>PDF Editor</h2>
+                    <p>Delete pages, reorder, extract selections, and compress PDFs. All processing is done in your browser.</p>
+                </div>
+
+                <div class="dropzone" id="pdfEditDropzone">
+                    <input type="file" id="pdfEditFileInput" accept=".pdf" hidden>
+                    <div class="dropzone-content">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                        <p><strong>Click to upload</strong> or drag and drop a PDF</p>
+                        <span class="dropzone-hint">PDF up to 100MB — edit, reorder, extract, compress</span>
+                    </div>
+                </div>
+
+                <div class="editor hidden" id="pdfEditEditor">
+                    <div class="editor-preview" style="grid-template-columns:1fr;">
+                        <div class="editor-image-wrapper" style="aspect-ratio:auto;min-height:80px;padding:16px;">
+                            <div class="audio-info">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                                <div class="audio-details">
+                                    <span class="audio-name" id="pdfEditFileName">—</span>
+                                    <span class="audio-meta" id="pdfEditFileMeta">—</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pdf-page-grid" id="pdfEditPageGrid"></div>
+
+                    <div class="editor-controls">
+                        <div class="pdf-edit-actions">
+                            <button class="btn btn-secondary" id="pdfEditDeleteBtn">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                                Delete selected
+                            </button>
+                            <button class="btn btn-secondary" id="pdfEditExtractBtn">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                Extract selected
+                            </button>
+                            <button class="btn btn-secondary" id="pdfEditCompressBtn">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                                Compress
+                            </button>
+                        </div>
+                        <button class="btn btn-primary btn-block btn-lg" id="pdfEditDownloadBtn">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                            Download PDF
+                        </button>
+                        <button class="btn btn-secondary btn-block" id="pdfEditResetBtn">Start over</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-audio" class="tab-content">
+                <div class="section-header">
+                    <h2>Audio Converter</h2>
+                    <p>Convert between MP3, WAV, OGG, AAC, FLAC, and more. All processing is done in your browser.</p>
+                </div>
+
+                <div class="dropzone" id="audioDropzone">
+                    <input type="file" id="audioFileInput" accept="audio/mpeg,audio/wav,audio/ogg,audio/flac,audio/x-flac,audio/mp4,audio/aac,audio/x-m4a,audio/wma,audio/x-aiff" hidden>
+                    <div class="dropzone-content">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+                        <p><strong>Click to upload</strong> or drag and drop an audio file</p>
+                        <span class="dropzone-hint">MP3, WAV, OGG, FLAC, M4A, AAC, WMA, AIFF — up to 100MB</span>
+                    </div>
+                </div>
+
+                <div class="editor hidden" id="audioEditor">
+                    <div class="editor-preview">
+                        <div class="editor-image-wrapper">
+                            <div class="audio-info" id="audioInfo">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+                                <div class="audio-details" id="audioDetails">
+                                    <span class="audio-name">—</span>
+                                    <span class="audio-meta">—</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="editor-image-wrapper" id="audioResultWrapper">
+                            <div class="result-placeholder" id="audioPlaceholder">
+                                <p>Select format and convert</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="editor-controls">
+                        <div class="quality-format-row">
+                            <div class="format-field">
+                                <label for="audioFormat">Convert to</label>
+                                <select id="audioFormat">
+                                    <option value="wav">WAV</option>
+                                    <option value="mp3">MP3</option>
+                                    <option value="ogg">OGG</option>
+                                    <option value="aac">AAC (M4A)</option>
+                                    <option value="flac">FLAC</option>
+                                </select>
+                                <span id="audioFormatWarn" class="doc-preview-content" style="font-size:0.72rem;color:var(--text-tertiary);display:block;margin-top:4px;">FLAC uses WAV internally (no native FLAC encoder in browsers)</span>
+                            </div>
+                            <div class="quality-field">
+                                <label for="audioBitrate">Bitrate: <span id="audioBitrateValue">192</span> kbps</label>
+                                <input type="range" id="audioBitrate" min="64" max="320" value="192" step="32">
+                            </div>
+                        </div>
+                        <button class="btn btn-primary btn-block btn-lg" id="audioConvertBtn">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                            Convert
+                        </button>
+                        <button class="btn btn-primary btn-block hidden" id="audioDownloadBtn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                            Download converted audio
+                        </button>
+                        <button class="btn btn-secondary btn-block" id="audioResetBtn">Convert another</button>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <section id="how" class="section steps">
             <div class="section-header">
-                <h2>Three tools in one</h2>
-                <p>Compress, convert, and combine images — all in your browser.</p>
+                <h2>Six tools — zero uploads</h2>
+                <p>Images, audio, PDFs, and documents — all processed in your browser for total privacy.</p>
             </div>
             <div class="steps-grid">
                 <article class="step-card">
                     <span class="step-number">1</span>
-                    <h3>Compress &amp; Resize</h3>
-                    <p>Upload an image, adjust dimensions and quality, then process. Side-by-side preview shows exactly what you get before downloading.</p>
+                    <h3>Image Optimizer</h3>
+                    <p>Compress, resize, and convert between JPEG, PNG, and WebP. Side-by-side preview and aspect-ratio lock.</p>
                 </article>
                 <article class="step-card">
                     <span class="step-number">2</span>
-                    <h3>Convert Format</h3>
-                    <p>Switch between JPEG, PNG, and WebP. Perfect for preparing images for the web, email, or print.</p>
+                    <h3>Images to PDF</h3>
+                    <p>Upload multiple images, reorder by dragging, and export as a single PDF with custom page size and orientation.</p>
                 </article>
                 <article class="step-card">
                     <span class="step-number">3</span>
-                    <h3>Combine to PDF</h3>
-                    <p>Upload multiple images, reorder them by dragging, and export as a single PDF. Handy for portfolios, reports, and presentations.</p>
+                    <h3>Audio Converter</h3>
+                    <p>Convert between MP3, WAV, OGG, AAC, FLAC and more. Adjust bitrate for the perfect balance of size and quality.</p>
+                </article>
+                <article class="step-card">
+                    <span class="step-number">4</span>
+                    <h3>Document Converter</h3>
+                    <p>Convert between DOCX, PPTX, TXT, HTML, Markdown, CSV, JSON and more. Preview before you download.</p>
+                </article>
+                <article class="step-card">
+                    <span class="step-number">5</span>
+                    <h3>PDF Editor</h3>
+                    <p>Delete, reorder, extract pages, and compress PDFs. Visual page thumbnails make it easy to select and manage pages.</p>
+                </article>
+                <article class="step-card">
+                    <span class="step-number">6</span>
+                    <h3>Always private</h3>
+                    <p>Every conversion happens locally using Canvas, Web Audio API, and jsPDF. Your files never leave your device.</p>
                 </article>
             </div>
         </section>
 
         <section class="section features">
             <div class="section-header">
-                <h2>Everything you need to work with images</h2>
-                <p>Compression, conversion, and PDF generation — all client-side, all private.</p>
+                <h2>Everything you need — images, audio, PDFs, documents</h2>
+                <p>Six powerful tools, zero uploads. All processing stays on your device.</p>
             </div>
             <div class="features-grid">
                 <article class="feature-card">
@@ -348,24 +564,31 @@
                 </article>
                 <article class="feature-card">
                     <div class="feature-icon" style="--icon-bg: rgba(139,92,246,0.1); --icon-color: #8b5cf6">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
                     </div>
-                    <h3>Client-side only</h3>
-                    <p>Zero server uploads. Your files are processed entirely in your browser using the Canvas API and jsPDF.</p>
+                    <h3>Audio Conversion</h3>
+                    <p>Convert between MP3, WAV, OGG, AAC, FLAC, and more. Adjust bitrate for quality or file size.</p>
                 </article>
                 <article class="feature-card">
                     <div class="feature-icon" style="--icon-bg: rgba(239,68,68,0.1); --icon-color: #ef4444">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
                     </div>
-                    <h3>Resize with presets</h3>
-                    <p>Choose from common resolutions or enter custom dimensions. Aspect ratio lock keeps proportions intact.</p>
+                    <h3>Document Converter</h3>
+                    <p>Convert between DOCX, PPTX, TXT, HTML, Markdown, CSV, JSON, and more. Preview content before downloading.</p>
+                </article>
+                <article class="feature-card">
+                    <div class="feature-icon" style="--icon-bg: rgba(168,85,247,0.1); --icon-color: #a855f7">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                    </div>
+                    <h3>PDF Editor</h3>
+                    <p>Delete, reorder, extract pages, and compress PDFs. Visual page thumbnails and drag-and-drop reordering.</p>
                 </article>
                 <article class="feature-card">
                     <div class="feature-icon" style="--icon-bg: rgba(16,185,129,0.1); --icon-color: #10b981">
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                     </div>
-                    <h3>No sign-up required</h3>
-                    <p>Free to use with no account needed. Upgrade for unlimited processing and API access.</p>
+                    <h3>Zero uploads</h3>
+                    <p>Every file stays on your device. No servers, no tracking, no limits. Truly private processing.</p>
                 </article>
             </div>
         </section>
